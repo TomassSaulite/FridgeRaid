@@ -1,0 +1,8 @@
+<script setup>
+import { ref,watch } from 'vue'; import api from '../api/axios'; const emit=defineEmits(['select']); const query=ref(''),options=ref([]),open=ref(false);let timer
+watch(query,value=>{clearTimeout(timer);if(!value.trim()){options.value=[];return}timer=setTimeout(async()=>{const {data}=await api.get('/ingredients/search',{params:{q:value}});options.value=data.data??data;open.value=true},300)})
+function select(value){emit('select',typeof value==='string'?value:(value.name??value.ingredient_name));query.value='';options.value=[];open.value=false}
+function submit(){if(query.value.trim())select(query.value.trim())}
+</script>
+<template><div class="autocomplete"><div class="input-row"><input v-model="query" data-test="ingredient-search" placeholder="Try tomatoes, rice, eggs…" @keydown.enter.prevent="submit"><button class="btn btn--tomato" data-test="add-ingredient" @click="submit">Add</button></div><ul v-if="open&&options.length"><li v-for="option in options" :key="option.id??option.name"><button data-test="ingredient-option" @click="select(option)">{{ option.name??option.ingredient_name }}</button></li></ul></div></template>
+<style scoped>.autocomplete{position:relative}.input-row{display:flex;gap:var(--space-2)}input{flex:1;min-width:0;padding:var(--space-3);border:1px solid var(--color-line);border-radius:var(--radius-md)}ul{position:absolute;z-index:2;inset:calc(100% + 4px) 0 auto;margin:0;padding:var(--space-2);list-style:none;background:white;border:1px solid var(--color-line);border-radius:var(--radius-md);box-shadow:0 10px 24px #2230261a}li button{width:100%;padding:var(--space-2);border:0;background:none;text-align:left;cursor:pointer}li button:hover{background:var(--color-herb-soft)}</style>
