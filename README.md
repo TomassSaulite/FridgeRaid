@@ -58,4 +58,4 @@ The visual language is built around one idea: ingredients should read like items
 
 ## Related repo
 
-The API this consumes lives at [link to your API repo](link-to-your-api-repo) — a Laravel backend with token auth and a graph-based ingredient substitution engine.
+The API this consumes lives at [link to your API repo](https://github.com/TomassSaulite/FridgeRaidAPI) — a Laravel backend with token auth and a graph-based ingredient substitution engine.
