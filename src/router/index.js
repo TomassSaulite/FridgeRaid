@@ -5,6 +5,7 @@ import RegisterView from '../views/RegisterView.vue'
 import PantryView from '../views/PantryView.vue'
 import SuggestionsView from '../views/SuggestionsView.vue'
 import RecipeDetailView from '../views/RecipeDetailView.vue'
+import FavoritesView from '../views/FavoritesView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,6 +17,7 @@ const router = createRouter({
     { path: '/suggestions', component: SuggestionsView, meta: { requiresAuth: true } },
     { path: '/recipes/:id', component: RecipeDetailView, props: true, meta: { requiresAuth: true } },
     { path: '/recipes/:id/cook', component: () => import('../views/CookModeView.vue'), meta: { requiresAuth: true, immersive: true } },
+    { path: '/favorites', component: FavoritesView, meta: { requiresAuth: true } },
   ],
 })
 

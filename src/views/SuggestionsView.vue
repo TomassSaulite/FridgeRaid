@@ -1,14 +1,126 @@
 <script setup>
-import { onMounted } from 'vue'; import RecipeCard from '../components/RecipeCard.vue'; import OneShopAway from '../components/OneShopAway.vue'; import { useRecipesStore } from '../stores/recipes'; import { usePantryStore } from '../stores/pantry'
-const recipes=useRecipesStore(); const pantry=usePantryStore(); const tiers=[['','All'],['lazy','Lazy'],['normal','Normal'],['ambitious','Ambitious']]
-function filter(value){recipes.filters.ease=value||null;recipes.fetchSuggestions()}
-onMounted(()=>{recipes.fetchSuggestions();pantry.fetchOneShopAway()})
+import { onMounted } from 'vue'
+
+import RecipeCard from '../components/RecipeCard.vue'
+import OneShopAway from '../components/OneShopAway.vue'
+
+import { useRecipesStore } from '../stores/recipes'
+import { usePantryStore } from '../stores/pantry'
+
+const recipes = useRecipesStore()
+const pantry = usePantryStore()
+
+const tiers = [
+  ['', 'All'],
+  ['lazy', 'Lazy'],
+  ['normal', 'Normal'],
+  ['ambitious', 'Ambitious'],
+]
+
+function filter(value) {
+  recipes.filters.ease = value || null
+  recipes.fetchSuggestions()
+}
+
+onMounted(() => {
+  recipes.fetchSuggestions()
+  pantry.fetchOneShopAway()
+})
 </script>
-<template><main class="page"><header><div><h1 class="display-title">What can we make?</h1><p class="muted">Ranked by what is already waiting in your kitchen.</p></div><router-link to="/pantry" class="pantry-link">Edit pantry</router-link></header>
-<OneShopAway />
-<div class="filters" data-test="ease-filter" aria-label="Filter by effort"><button v-for="[value,label] in tiers" :key="value" :class="{active:(recipes.filters.ease||'')===value}" @click="filter(value)">{{ label }}</button></div>
-<p v-if="recipes.error" class="error">{{ recipes.error }}</p><div v-if="recipes.loading" class="loading">Checking the pantry shelves…</div>
-<section v-else-if="recipes.suggestions.length" class="grid"><RecipeCard v-for="suggestion in recipes.suggestions" :key="suggestion.id??suggestion.recipe?.id" :recipe="suggestion" /></section>
-<section v-else class="empty"><h2>Nothing matches yet</h2><p>Add a few things to your pantry and this fills up fast.</p></section></main></template>
-<style scoped>.grid{grid-template-columns:repeat(3,minmax(0,1fr));min-width:0}.grid>*{min-width:0}header>div{min-width:0}.pantry-link{flex-shrink:0}.filters{max-width:100%;overflow-x:auto}.filters button{flex:0 0 auto}.error{overflow-wrap:anywhere}@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.grid{grid-template-columns:minmax(0,1fr)}}</style>
-<style scoped>header{display:flex;justify-content:space-between;align-items:end;gap:var(--space-4)}header p{margin:var(--space-2) 0 0}.pantry-link{color:var(--color-herb);font-weight:600}.filters{display:inline-flex;margin:var(--space-8) 0 var(--space-6);padding:4px;border:1px solid var(--color-line);border-radius:var(--radius-md);background:var(--color-surface)}.filters button{border:0;border-radius:8px;padding:var(--space-2) var(--space-4);background:transparent;color:var(--color-muted);cursor:pointer}.filters .active{background:var(--color-herb);color:white}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-6)}.loading,.empty{text-align:center;padding:var(--space-12);border:1px dashed var(--color-line);border-radius:var(--radius-lg);color:var(--color-muted)}.empty h2{font:italic var(--text-xl) var(--font-display);color:var(--color-ink);margin:0}.error{color:var(--color-tomato)}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.grid{grid-template-columns:1fr}.filters{display:flex;overflow:auto}.filters button{padding-inline:var(--space-3)}header{align-items:start}}</style>
+
+<template>
+  <v-container class="py-8">
+
+    <!-- Header -->
+    <v-row align="end" class="mb-6">
+      <v-col>
+        <h1 class="text-h3 font-weight-bold">
+          What can we make?
+        </h1>
+
+        <p class="text-medium-emphasis mt-2">
+          Ranked by what is already waiting in your kitchen.
+        </p>
+      </v-col>
+
+      <v-col cols="auto">
+        <v-btn
+          to="/pantry"
+          variant="text"
+          prepend-icon="mdi-fridge-outline"
+        >
+          Edit pantry
+        </v-btn>
+      </v-col>
+    </v-row>
+
+    <!-- One shop away -->
+    <OneShopAway />
+
+    <!-- Ease filter -->
+    <v-btn-toggle
+      :model-value="recipes.filters.ease ?? ''"
+      class="my-6"
+      divided
+      mandatory
+      data-test="ease-filter"
+    >
+      <v-btn
+        v-for="[value, label] in tiers"
+        :key="value"
+        :value="value"
+        @click="filter(value)"
+      >
+        {{ label }}
+      </v-btn>
+    </v-btn-toggle>
+
+    <!-- Error -->
+    <v-alert
+      v-if="recipes.error"
+      type="error"
+      variant="tonal"
+      class="mb-6"
+    >
+      {{ recipes.error }}
+    </v-alert>
+
+    <!-- Loading -->
+    <div
+      v-if="recipes.loading"
+      class="d-flex flex-column align-center justify-center py-12"
+    >
+      <v-progress-circular
+        indeterminate
+        size="48"
+        class="mb-4"
+      />
+
+      <span class="text-medium-emphasis">
+        Checking the pantry shelves…
+      </span>
+    </div>
+
+    <!-- Recipe cards -->
+    <v-row v-else-if="recipes.suggestions.length">
+      <v-col
+        v-for="suggestion in recipes.suggestions"
+        :key="suggestion.id ?? suggestion.recipe?.id"
+        cols="12"
+        sm="6"
+        md="4"
+      >
+        <RecipeCard :recipe="suggestion" />
+      </v-col>
+    </v-row>
+
+    <!-- No recipes -->
+    <v-empty-state
+      v-else
+      icon="mdi-food-off"
+      title="Nothing matches yet"
+      text="Add a few things to your pantry and this fills up fast."
+    />
+
+  </v-container>
+</template>
