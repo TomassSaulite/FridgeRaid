@@ -55,6 +55,10 @@ npm run dev
 
 Requires the [API](https://github.com/TomassSaulite/FridgeRaidAPI) running locally, or point `VITE_API_URL` in a `.env` file at a deployed instance.
 
+## Quality
+
+See [`docs/quality.md`](docs/quality.md) for the accessibility, performance, and release checklist.
+
 ## Verification
 
 ```bash
