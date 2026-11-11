@@ -50,7 +50,7 @@ Covers the full user journey: register → login → build a pantry → view ran
 npm run build
 ```
 
-Deployed automatically to GitHub Pages on push to `main` via GitHub Actions — see `.github/workflows/deploy.yml`.
+The build outputs static files to `dist/`, so it can be served from any static host. Set `VITE_API_URL` to your deployed API before building.
 
 ## Design notes
 
