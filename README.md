@@ -29,6 +29,23 @@ A Vue 3 SPA that turns your pantry into tonight's dinner — ranked by what you 
 - Guided Cook Mode with per-step timers
 - Installable PWA with offline suggestion caching
 
+## Try it locally
+
+Run the API first, seed the recipe catalog, then start this frontend:
+
+```bash
+# in FridgeRaidAPI
+php artisan migrate
+php artisan db:seed --class=RecipeImportSeeder
+php artisan serve
+
+# in FridgeRaid
+npm install
+npm run dev
+```
+
+Create an account, add a few ingredients, and open **Suggestions** to see the substitution-aware ranking. Then open a recipe and switch to **Cook Mode**.
+
 ## Running locally
 
 ```bash
