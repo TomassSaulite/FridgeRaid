@@ -1,4 +1,4 @@
-# Fridge to Dinner — Web App
+# FridgeRaid — Web App
 
 A Vue 3 SPA that turns your pantry into tonight's dinner — ranked by what you actually have, with a guided cook-along mode for when you're ready to start.
 
@@ -34,7 +34,7 @@ npm install
 npm run dev
 ```
 
-Requires the [API](link-to-your-api-repo) running locally, or point `VITE_API_BASE_URL` in a `.env` file at a deployed instance.
+Requires the [API](https://github.com/TomassSaulite/FridgeRaidAPI) running locally, or point `VITE_API_URL` in a `.env` file at a deployed instance.
 
 ## Testing
 
@@ -58,4 +58,4 @@ The visual language is built around one idea: ingredients should read like items
 
 ## Related repo
 
-The API this consumes lives at [link to your API repo](https://github.com/TomassSaulite/FridgeRaidAPI) — a Laravel backend with token auth and a graph-based ingredient substitution engine.
+The API this consumes lives at [FridgeRaidAPI](https://github.com/TomassSaulite/FridgeRaidAPI) — a Laravel backend with token auth and a graph-based ingredient substitution engine.
