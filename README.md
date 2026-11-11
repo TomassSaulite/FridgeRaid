@@ -1,5 +1,7 @@
 # FridgeRaid — Web App
 
+[![CI](https://github.com/TomassSaulite/FridgeRaid/actions/workflows/ci.yml/badge.svg)](https://github.com/TomassSaulite/FridgeRaid/actions/workflows/ci.yml)
+
 A Vue 3 SPA that turns your pantry into tonight's dinner — ranked by what you actually have, with a guided cook-along mode for when you're ready to start.
 
 ## What makes this different from a typical CRUD frontend
@@ -15,8 +17,8 @@ A Vue 3 SPA that turns your pantry into tonight's dinner — ranked by what you 
 - Vue Router, Pinia
 - Axios
 - vite-plugin-pwa (offline support and installability)
-- Cypress (end-to-end tests)
-- No UI framework dependency — styling is hand-built on CSS custom properties, so the signature visual elements aren't fighting a component library's defaults
+- Vuetify
+- Hand-built Sass design tokens for the signature visual elements
 
 ## Features
 
@@ -36,13 +38,13 @@ npm run dev
 
 Requires the [API](https://github.com/TomassSaulite/FridgeRaidAPI) running locally, or point `VITE_API_URL` in a `.env` file at a deployed instance.
 
-## Testing
+## Verification
 
 ```bash
-npx cypress run
+npm run build
 ```
 
-Covers the full user journey: register → login → build a pantry → view ranked suggestions → open a recipe → log out.
+The build outputs static files to `dist/`, so it can be served from any static host. The same build runs automatically in GitHub Actions.
 
 ## Build and deploy
 
@@ -50,7 +52,7 @@ Covers the full user journey: register → login → build a pantry → view ran
 npm run build
 ```
 
-The build outputs static files to `dist/`, so it can be served from any static host. Set `VITE_API_URL` to your deployed API before building.
+Set `VITE_API_URL` to your deployed API before building.
 
 ## Design notes
 
